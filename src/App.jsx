@@ -30,6 +30,11 @@ function App() {
   const [equipment, setEquipment] = useState('');
   const [location, setLocation] = useState('TA');
 
+  const filteredLocations = inventory.map((item) => item.location);
+  console.log(filteredLocations);
+
+  const filteredLoc = [...new Set(inventory.map((item) => item.location))];
+
   function handleAddItems(item) {
     setInventory((prevItems) => [...prevItems, item]);
   }
@@ -65,18 +70,61 @@ function App() {
     <>
       <div>
         <h2>Inventory</h2>
-        <ul>
-          {inventory.map((item) => (
-            <li key={item.equipment}>
-              <h3>{item.equipment}</h3>
-              <p>{item.location}</p>
-              <p>{item.date}</p>
-              <button onClick={() => handleDeleteItem(item.equipment)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="container">
+          {/* <div> */}
+          {/* <h3>WB</h3>
+            <ul>
+              {inventory
+                .filter((item) => item.location == 'WB')
+                .map((equip) => (
+                  <li key={equip.equipment}>{equip.equipment}</li>
+                ))}
+            </ul> */}
+
+          {/* <h3>TA</h3>
+            <ul>
+              {inventory
+                .filter((item) => item.location == 'TA')
+                .map((equip) => (
+                  <li key={equip.equipment}>{equip.equipment}</li>
+                ))}
+            </ul>
+            <h3>TB</h3>
+            <ul>
+              {inventory
+                .filter((item) => item.location == 'TB')
+                .map((equip) => (
+                  <li key={equip.equipment}>{equip.equipment}</li>
+                ))}
+            </ul> */}
+          {/* </div> */}
+
+          <div>
+            {filteredLoc.map((loc) => (
+              <div>
+                <h3>{loc}</h3>
+                {inventory
+                  .filter((item) => item.location == loc)
+                  .map((equip) => (
+                    <li>{equip.equipment}</li>
+                  ))}
+              </div>
+            ))}
+          </div>
+
+          <ul>
+            {inventory.map((item) => (
+              <li key={item.equipment}>
+                <h3>{item.equipment}</h3>
+                <p>{item.location}</p>
+                <p>{item.date}</p>
+                <button onClick={() => handleDeleteItem(item.equipment)}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
