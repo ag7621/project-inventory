@@ -27,37 +27,22 @@ const initialData = [
 function App() {
   const [inventory, setInventory] = useState(initialData);
 
-  const [equipment, setEquipment] = useState('');
-  const [location, setLocation] = useState('TA');
-
-  const filteredLocations = inventory.map((item) => item.location);
-  console.log(filteredLocations);
+  // const filteredLocations = inventory.map((item) => item.location);
+  // console.log(filteredLocations);
 
   const filteredLoc = [...new Set(inventory.map((item) => item.location))];
+  console.log(filteredLoc);
 
   function handleAddItems(item) {
     setInventory((prevItems) => [...prevItems, item]);
   }
 
-  function handleDeleteItem(equipment) {
-    console.log(equipment);
-    setInventory((inventory) =>
-      inventory.filter((item) => item.equipment !== equipment)
-    );
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!equipment) return;
-
-    const newEquipment = { equipment, location };
-    console.log(newEquipment);
-
-    handleAddItems(newEquipment);
-
-    setEquipment('');
-  }
+  // function handleDeleteItem(equipment) {
+  //   console.log(equipment);
+  //   setInventory((inventory) =>
+  //     inventory.filter((item) => item.equipment !== equipment)
+  //   );
+  // }
 
   useEffect(() => {
     console.log('inventory changes: ', inventory);
@@ -101,12 +86,12 @@ function App() {
 
           <div>
             {filteredLoc.map((loc) => (
-              <div>
+              <div key={loc}>
                 <h3>{loc}</h3>
                 {inventory
                   .filter((item) => item.location == loc)
                   .map((equip) => (
-                    <li>{equip.equipment}</li>
+                    <li key={equip.equipment}>{equip.equipment}</li>
                   ))}
               </div>
             ))}
@@ -118,33 +103,55 @@ function App() {
                 <h3>{item.equipment}</h3>
                 <p>{item.location}</p>
                 <p>{item.date}</p>
-                <button onClick={() => handleDeleteItem(item.equipment)}>
+                {/* <button onClick={() => handleDeleteItem(item.equipment)}>
                   Delete
-                </button>
+                </button> */}
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <h3>Enter equipment</h3>
-        <select value={location} onChange={(e) => setLocation(e.target.value)}>
-          <option value="TB">TB</option>
-          <option value="TA">TA</option>
-          <option value="PM">PM</option>
-          <option value="WB">WB</option>
-          <option value="VB">VB</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Equipment number"
-          value={equipment}
-          onChange={(e) => setEquipment(e.target.value)}
-        />
-        <button>Add</button>
-      </form>
+      <Form onAddItems={handleAddItems} />
     </>
+  );
+}
+
+function Form({ onAddItems }) {
+  const [equipment, setEquipment] = useState('');
+  const [location, setLocation] = useState('TA');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!equipment) return;
+
+    const newEquipment = { equipment, location };
+    console.log(newEquipment);
+
+    onAddItems(newEquipment);
+
+    setEquipment('');
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Enter equipment</h3>
+      <select value={location} onChange={(e) => setLocation(e.target.value)}>
+        <option value="TB">TB</option>
+        <option value="TA">TA</option>
+        <option value="PM">PM</option>
+        <option value="WB">WB</option>
+        <option value="VB">VB</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Equipment number"
+        value={equipment}
+        onChange={(e) => setEquipment(e.target.value)}
+      />
+      <button>Add</button>
+    </form>
   );
 }
 
