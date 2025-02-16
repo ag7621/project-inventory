@@ -27,22 +27,20 @@ const initialData = [
 function App() {
   const [inventory, setInventory] = useState(initialData);
 
-  // const filteredLocations = inventory.map((item) => item.location);
-  // console.log(filteredLocations);
-
   const filteredLoc = [...new Set(inventory.map((item) => item.location))];
-  console.log(filteredLoc);
+  console.log('current filtered locations are ', filteredLoc);
 
   function handleAddItems(item) {
+    console.log('adding ', item);
     setInventory((prevItems) => [...prevItems, item]);
   }
 
-  // function handleDeleteItem(equipment) {
-  //   console.log(equipment);
-  //   setInventory((inventory) =>
-  //     inventory.filter((item) => item.equipment !== equipment)
-  //   );
-  // }
+  function handleDeleteItem(equipment) {
+    console.log('deleting ', equipment);
+    setInventory((inventory) =>
+      inventory.filter((item) => item.equipment !== equipment)
+    );
+  }
 
   useEffect(() => {
     console.log('inventory changes: ', inventory);
@@ -56,35 +54,7 @@ function App() {
       <div>
         <h2>Inventory</h2>
         <div className="container">
-          {/* <div> */}
-          {/* <h3>WB</h3>
-            <ul>
-              {inventory
-                .filter((item) => item.location == 'WB')
-                .map((equip) => (
-                  <li key={equip.equipment}>{equip.equipment}</li>
-                ))}
-            </ul> */}
-
-          {/* <h3>TA</h3>
-            <ul>
-              {inventory
-                .filter((item) => item.location == 'TA')
-                .map((equip) => (
-                  <li key={equip.equipment}>{equip.equipment}</li>
-                ))}
-            </ul>
-            <h3>TB</h3>
-            <ul>
-              {inventory
-                .filter((item) => item.location == 'TB')
-                .map((equip) => (
-                  <li key={equip.equipment}>{equip.equipment}</li>
-                ))}
-            </ul> */}
-          {/* </div> */}
-
-          <div>
+          <div className="categories">
             {filteredLoc.map((loc) => (
               <div key={loc}>
                 <h3>{loc}</h3>
@@ -99,14 +69,11 @@ function App() {
 
           <ul>
             {inventory.map((item) => (
-              <li key={item.equipment}>
-                <h3>{item.equipment}</h3>
-                <p>{item.location}</p>
-                <p>{item.date}</p>
-                {/* <button onClick={() => handleDeleteItem(item.equipment)}>
-                  Delete
-                </button> */}
-              </li>
+              <Item
+                item={item}
+                key={item.equipment}
+                onDeleteItem={handleDeleteItem}
+              />
             ))}
           </ul>
         </div>
@@ -152,6 +119,17 @@ function Form({ onAddItems }) {
       />
       <button>Add</button>
     </form>
+  );
+}
+
+function Item({ item, onDeleteItem }) {
+  return (
+    <li>
+      <h3>{item.equipment}</h3>
+      <p>{item.location}</p>
+      <p>{item.date}</p>
+      <button onClick={() => onDeleteItem(item.equipment)}>Delete</button>
+    </li>
   );
 }
 
