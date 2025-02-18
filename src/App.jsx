@@ -31,15 +31,19 @@ function App() {
   console.log('current filtered locations are ', filteredLoc);
 
   function handleAddItems(item) {
-    console.log('adding ', item);
+    console.log('adding:', item);
     setInventory((prevItems) => [...prevItems, item]);
   }
 
   function handleDeleteItem(equipment) {
-    console.log('deleting ', equipment);
-    setInventory((inventory) =>
-      inventory.filter((item) => item.equipment !== equipment)
+    const confirmed = window.confirm(
+      `are you sure you wish to delete ${equipment} from today's inventory? `
     );
+    console.log('deleted:', equipment);
+    if (confirmed)
+      setInventory((inventory) =>
+        inventory.filter((item) => item.equipment !== equipment)
+      );
   }
 
   useEffect(() => {
@@ -89,12 +93,15 @@ function Form({ onAddItems }) {
   const [location, setLocation] = useState('TA');
 
   function handleSubmit(e) {
+    const currentDate = new Date().toLocaleDateString();
+
     e.preventDefault();
 
     if (!equipment) return;
 
-    const newEquipment = { equipment, location };
+    const newEquipment = { equipment, location, date: currentDate };
     console.log(newEquipment);
+    console.log(currentDate);
 
     onAddItems(newEquipment);
 
@@ -115,7 +122,7 @@ function Form({ onAddItems }) {
         type="text"
         placeholder="Equipment number"
         value={equipment}
-        onChange={(e) => setEquipment(e.target.value)}
+        onChange={(e) => setEquipment(e.target.value.toUpperCase())}
       />
       <button>Add</button>
     </form>
