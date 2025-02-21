@@ -55,7 +55,7 @@ function App() {
 
   return (
     <>
-      <div>
+      {/* <div>
         <h2>Inventory</h2>
         <div className="container">
           <div className="categories">
@@ -81,10 +81,51 @@ function App() {
             ))}
           </ul>
         </div>
-      </div>
-
+      </div> */}
+      <List
+        inventory={inventory}
+        filtered={filteredLoc}
+        onDeleteItem={handleDeleteItem}
+      />
       <Form onAddItems={handleAddItems} />
     </>
+  );
+}
+
+function List({ inventory, filtered, onDeleteItem }) {
+  return (
+    <div>
+      <h2>Inventory</h2>
+      <div className="container">
+        <div className="categories">
+          {filtered.map((loc) => (
+            <div key={loc}>
+              <h3>{loc}</h3>
+              {inventory
+                .filter((item) => item.location == loc)
+                .map((equip) => (
+                  // <li key={equip.equipment}>{equip.equipment}</li>
+                  <Item
+                    item={equip}
+                    key={equip.equipment}
+                    onDeleteItem={onDeleteItem}
+                  />
+                ))}
+            </div>
+          ))}
+        </div>
+
+        {/* <ul>
+          {inventory.map((item) => (
+            <Item
+              item={item}
+              key={item.equipment}
+              onDeleteItem={onDeleteItem}
+            />
+          ))}
+        </ul> */}
+      </div>
+    </div>
   );
 }
 
@@ -134,7 +175,7 @@ function Item({ item, onDeleteItem }) {
     <li>
       <h3>{item.equipment}</h3>
       <p>{item.location}</p>
-      <p>{item.date}</p>
+      {/* <p>{item.date}</p> */}
       <button onClick={() => onDeleteItem(item.equipment)}>Delete</button>
     </li>
   );
