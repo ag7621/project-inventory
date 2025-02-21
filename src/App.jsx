@@ -1,28 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-
-const initialData = [
-  {
-    equipment: 'DC1234A',
-    location: 'WB',
-    // date: '2023-10-15',
-  },
-  {
-    equipment: 'DC5678B',
-    location: 'TA',
-    // date: '2023-11-12',
-  },
-  {
-    equipment: 'TM4321C',
-    location: 'WB',
-    // date: '2023-10-15',
-  },
-  {
-    equipment: 'JH8765D',
-    location: 'TB',
-    // date: '2023-10-08',
-  },
-];
+import initialData from './Data';
 
 function App() {
   const [inventory, setInventory] = useState(initialData);
@@ -54,77 +32,35 @@ function App() {
   }, [inventory]);
 
   return (
-    <>
-      {/* <div>
-        <h2>Inventory</h2>
-        <div className="container">
-          <div className="categories">
-            {filteredLoc.map((loc) => (
-              <div key={loc}>
-                <h3>{loc}</h3>
-                {inventory
-                  .filter((item) => item.location == loc)
-                  .map((equip) => (
-                    <li key={equip.equipment}>{equip.equipment}</li>
-                  ))}
-              </div>
-            ))}
-          </div>
-
-          <ul>
-            {inventory.map((item) => (
-              <Item
-                item={item}
-                key={item.equipment}
-                onDeleteItem={handleDeleteItem}
-              />
-            ))}
-          </ul>
-        </div>
-      </div> */}
+    <div>
+      <h2>Inventory</h2>
       <List
         inventory={inventory}
         filtered={filteredLoc}
         onDeleteItem={handleDeleteItem}
       />
       <Form onAddItems={handleAddItems} />
-    </>
+    </div>
   );
 }
 
 function List({ inventory, filtered, onDeleteItem }) {
   return (
-    <div>
-      <h2>Inventory</h2>
-      <div className="container">
-        <div className="categories">
-          {filtered.map((loc) => (
-            <div key={loc}>
-              <h3>{loc}</h3>
-              {inventory
-                .filter((item) => item.location == loc)
-                .map((equip) => (
-                  // <li key={equip.equipment}>{equip.equipment}</li>
-                  <Item
-                    item={equip}
-                    key={equip.equipment}
-                    onDeleteItem={onDeleteItem}
-                  />
-                ))}
-            </div>
-          ))}
-        </div>
-
-        {/* <ul>
-          {inventory.map((item) => (
-            <Item
-              item={item}
-              key={item.equipment}
-              onDeleteItem={onDeleteItem}
-            />
-          ))}
-        </ul> */}
-      </div>
+    <div className="list">
+      {filtered.map((loc) => (
+        <ul key={loc}>
+          <h3>{loc}</h3>
+          {inventory
+            .filter((item) => item.location == loc)
+            .map((equip) => (
+              <Item
+                item={equip}
+                key={equip.equipment}
+                onDeleteItem={onDeleteItem}
+              />
+            ))}
+        </ul>
+      ))}
     </div>
   );
 }
@@ -173,8 +109,8 @@ function Form({ onAddItems }) {
 function Item({ item, onDeleteItem }) {
   return (
     <li>
-      <h3>{item.equipment}</h3>
-      <p>{item.location}</p>
+      <p>{item.equipment}</p>
+      {/* <p>{item.location}</p> */}
       {/* <p>{item.date}</p> */}
       <button onClick={() => onDeleteItem(item.equipment)}>Delete</button>
     </li>
