@@ -52,15 +52,17 @@ function List({ inventory, filtered, onDeleteItem }) {
       {filtered.map((loc) => (
         <ul key={loc}>
           <h3>{loc}</h3>
-          {inventory
-            .filter((item) => item.location == loc)
-            .map((equip) => (
-              <Item
-                item={equip}
-                key={equip.equipment}
-                onDeleteItem={onDeleteItem}
-              />
-            ))}
+          <div>
+            {inventory
+              .filter((item) => item.location == loc)
+              .map((equip) => (
+                <Item
+                  item={equip}
+                  key={equip.equipment}
+                  onDeleteItem={onDeleteItem}
+                />
+              ))}
+          </div>
         </ul>
       ))}
     </div>

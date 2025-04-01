@@ -9,6 +9,11 @@
   display: flex;
 }
 
+.list li {
+  display: flex;
+  list-style: none;
+}
+
 .form {
   display: flex;
   flex-direction: column;
